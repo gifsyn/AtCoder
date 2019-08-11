@@ -1,41 +1,39 @@
 
 #include <iostream>
-#include <algorithm>
-#include <utility>
+#include <queue>
 
 using namespace std;
 
 int main(){
     int N, M;
     cin >> N >> M;
-    pair<int, int> J[N];
-    int a,b;
+    
+    vector< vector<int> > jobs(M);
     for(int i = 0; i < N; i++){
+        int a, b;
         cin >> a >> b;
-        J[i] = make_pair(b, a);
+        if(a > M){
+            continue;
+        }else{
+            jobs[M-a].push_back(b);
+        }
     }
 
-    // cout << endl;
-    sort(J, J+N);
-    // for(int i = 0; i < N; i++){
-    //     cout << J[i].first << " " << J[i].second << endl;
-    // }
-
+    priority_queue<int> q;
     long long ans = 0;
-    int cnt = 0;
-    for(int i = N-1; i >= 0; i--){
-        if(J[i].second + cnt <= M){
-            ans += J[i].first;
-            // cout << cnt << " day:" << "reward " << J[i].first << " at "<< cnt+J[i].second << " day" << endl;
-            cnt++;
+    for(int i = M-1; i >= 0; i--){
+        for(int b : jobs[i]){
+            q.push(b);
         }
-        if(cnt > M){
-            break;
+
+        if(!q.empty()){
+            ans += q.top();
+            q.pop();
         }
     }
-    
+
     cout << ans << endl;
-    
+
 
     return 0;
 }

@@ -1,41 +1,33 @@
 
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
+#include <map>
+#include <algorithm>
 
 using namespace std;
 
 int main(){
-    int N;
-    cin >> N;
-    vector<string> s(N);
-    for(int i = 0; i < N; i++){
+    int n;
+    cin >> n;
+    vector<string> s(n);
+    for(int i = 0; i < n; i++){
         cin >> s[i];
     }
-
-    vector< vector<int> > cnt(N, vector<int>(26, 0));
-    for(int i = 0; i < N; i++){
-        for(int j = 0; j < 10; j++){
-            cnt[i][s[i][j]-'a']++;
-        }
+    
+    map<string, int> M;
+    for(int i = 0; i < n; i++){
+        sort(s[i].begin(), s[i].end());
+        M[s[i]]++;
     }
 
     long long ans = 0;
-    long long count;
-    for(int i = 0; i < N; i++){
-        count = 0;
-        for(int j = i+1; j < cnt.size(); j++){
-            if(cnt[i] == cnt[j]){
-                cnt.erase(cnt.begin()+j);
-                count++;
-                j--;
-            }
-        }
-        ans += count*(count+1)/2;
+    for(auto P : M){
+        ans += (long long)P.second * (P.second - 1) / 2;
     }
 
     cout << ans << endl;
-    
+
 
     return 0;
 }
