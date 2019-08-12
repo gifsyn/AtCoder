@@ -7,26 +7,38 @@ using namespace std;
 int main() {
     int N;
     cin >> N;
-    vector<long long> A(N);
+    int A[N];
     for(int i = 0; i < N; i++){
         cin >> A[i];
-        A[i] *= 2;
     }
 
-
-    long long b = 0;
+    int x = 0;
     for(int i = 0; i < N; i++){
-        b = A[i] - b;
+        if(i % 2 == 1){
+            x -= A[i];
+        }else{
+            x += A[i];
+        }
     }
-    long long x = b / 2;
+    x /= 2;
 
-
-    long long R = x;
+    int ans[N];
+    ans[0] = x;
+    for(int i = 0; i < N-1; i++){
+        ans[i+1] = A[i] - ans[i];
+    }
     for(int i = 0; i < N; i++){
-        cout << R << " ";
-        R = A[i] - R;
+        ans[i] *= 2;
     }
-    cout << endl;
+
+    for(int i = 0; i < N; i++){
+        if(i != N-1){
+            cout << ans[i] << " ";
+        }else{
+            cout << ans[i] << endl;
+        }
+    }
+
 
     return 0;
 }
