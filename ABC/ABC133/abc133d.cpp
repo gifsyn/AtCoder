@@ -15,14 +15,14 @@ int main() {
 
 
     long long b = 0;
-    for (int i = 0; i < N; i++){
+    for(int i = 0; i < N; i++){
         b = A[i] - b;
     }
     long long x = b / 2;
 
 
     long long R = x;
-    for (int i = 0; i < N; i++) {
+    for(int i = 0; i < N; i++){
         cout << R << " ";
         R = A[i] - R;
     }
