@@ -1,35 +1,59 @@
 
-#include <cstdio>
-#include <cstring>
+#include <iostream>
 
-void swap(char *, char *);
+using namespace std;
 
-int main(void){
-	int n,l;
-	scanf("%d%d",&n,&l);
-	char s[100][101];
-	for(int i = 0; i < n; i++){
-        scanf("%s", s[i]);
-    }
-	for(int i = 0; i < n; i++){
-		for(int j = 0; j < i; j++){
-			if(strcmp(s[i], s[j]) < 0){
-                swap(s[i],s[j]);
-            }
+int N, M;
+const int N_max = 50;
+const int M_max = 50;
+char A[N_max][N_max], B[M_max][M_max];
+
+int main(){
+	cin >> N >> M;
+	for(int i = 0; i < N; i++){
+		for(int j = 0; j < N; j++){
+			cin >> A[i][j];
 		}
 	}
-	
-	for(int i = 0; i < n; i++){
-        printf("%s",s[i]);
-    }
-    printf("\n");
+	for(int i = 0; i < M; i++){
+		for(int j = 0; j < M; j++){
+			cin >> B[i][j];
+		}
+	}
+
+	bool ans = false;
+	bool match;
+	for(int i = 0; i < N; i++){
+		for(int j = 0; j < N; j++){
+			if(i+M-1 >= N || j+M-1 >= N){
+				continue;
+			}
+
+			match = true;
+			for(int y = 0; y < M; y++){
+				for(int x = 0; x < M; x++){
+					if(A[i+y][j+x] != B[y][x]){
+						match = false;
+						break;
+					}
+				}
+			}
+			if(match == true){
+				ans = true;
+				break;
+			}
+		}
+		if(ans == true){
+			break;
+		}
+	}
+
+	if(ans == true){
+		cout << "Yes" << endl;
+	}else{
+		cout << "No" <<endl;
+	}
+
 
 	return 0;
-}
-
-void swap(char *a, char *b){
-	char c[101];
-	strcpy(c, a);
-	strcpy(a, b);
-	strcpy(b, c);
 }
