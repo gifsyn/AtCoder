@@ -1,16 +1,24 @@
 
-#include <cstdio>
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
 
 int main(){
-    int a,b,c,d;
-    scanf("%d %d %d %d",&a,&b,&c,&d);
-    if((double)b / a > (double)d / c){
-        printf("TAKAHASHI\n");
-    }else if((double)b / a < (double)d / c){
-        printf("AOKI\n");
-    }else{
-        printf("DRAW\n");
+    int N, M;
+    cin >> N >> M;
+    if(N >= 12){
+        N -= 12;
     }
+    double L = (double)N;
+    double S = (double)M;
 
+    double ans;
+    ans = min(abs((30*L+0.5*S)-6*S), 360 - abs((30*L+0.5*S)-6*S));
+
+    printf("%.12lf\n", ans);
+
+    
     return 0;
 }

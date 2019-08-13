@@ -1,31 +1,40 @@
 
-#include <cstdio>
+#include <iostream>
 
+using namespace std;
+ 
 int main(){
-    int n;
-    long long int k;
-    scanf("%d %lld", &n, &k);
-    long long int a[n];
-    for(int i = 0; i < n; i++){
-        scanf("%lld", &a[i]);
+    long long N, K;
+    cin >> N >> K;
+    long long a[N];
+    for(int i = 0; i < N; ++i){
+        cin >> a[i];
     }
 
-
-    long long int sum = 0;
-    long long int ans = 0;
-
-    int j = 0;
-    for(int i = 0; i < n; i++){
-        while(j < n && sum + a[j] < k){
-            sum += a[j];
-            j++;
+    long long ans = 0;
+        
+    int right = 0;
+    long long sum = 0;
+    for(int left = 0; left < N; left++){
+        while(right < N && sum < K){
+            sum += a[right];
+            right++;
+        }
+        if(sum < K){
+            break;
         }
 
-        ans += (long long int)(j - i);
-        sum -= a[i];
-    }
+        ans += (long long)(N - right + 1);
 
-    printf("%lld\n", n * (n + 1) / 2 - ans);
+        if(right == left){
+            right++;
+        }else{
+            sum -= a[left];
+        }
+    }
+ 
+    cout << ans << endl;
+
 
     return 0;
 }
