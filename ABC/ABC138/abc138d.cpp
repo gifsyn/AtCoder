@@ -1,50 +1,56 @@
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-int N;
-int Q;
-int a[(int)1e6];
-int b[(int)1e6];
-int p[(int)1e6];
-int x[(int)1e6];
-long long cnt[(int)1e6];
+
+long long N, Q;
+long  long ans[200001];
+bool visited[200001];
+vector<int> T[200001];
 
 
-void dfs(int p, int x){
-    cnt[p] += x;
-    for(int i = 0; i < N-1; i++){
-        if(a[i] == p){
-            dfs(b[i], x);
+void dfs(int r, long long p){
+    visited[r] = true;
+    ans[r] = p;
+    for(int i = 0; i < T[r].size(); i++){
+        int to = T[r][i];
+        if(visited[to] == false){
+            dfs(to, ans[r]+ans[to]);
         }
     }
-
-    return ;
 }
 
 
 int main(){
     cin >> N >> Q;
     for(int i = 0; i < N-1; i++){
-        cin >> a[i] >> b[i];
+        int a, b;
+        cin >> a >> b;
+        a --; b --;
+        T[a].push_back(b);
+        T[b].push_back(a);
     }
+
     for(int i = 0; i < Q; i++){
-        cin >> p[i] >> x[i];
+        int p, x;
+        cin >> p >> x;
+        p--;
+        ans[p] += x;
     }
 
+    dfs(0, ans[0]);
 
-    for(int i = 0; i < Q; i++){
-        dfs(p[i], x[i]);
-    }
 
-    for(int i = 1; i <= N; i++){
-        if(i != N){
-            cout << cnt[i] << " ";
+    for(int i = 0; i < N; i++){
+        if(i != N-1){
+            cout << ans[i] << " ";
         }else{
-            cout << cnt[i] << endl;
+            cout << ans[i] << endl;
         }
     }
+
 
     return 0;
 }

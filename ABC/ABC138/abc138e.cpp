@@ -1,48 +1,41 @@
 
 #include <iostream>
 #include <string>
-#include <map>
+#include <vector>
 
 using namespace std;
 
-string s, t;
-map<char, int> M_s;
-map<char, int> M_t;
-
-void generate_map(){
-    for(int i = 0; i < s.size(); i++){
-        M_s.insert(make_pair(s[i], i+1));
-    }
-    for(int i = 0; i < t.size(); i++){
-        M_t.insert(make_pair(t[i], i+1));
-    }
-}
-
 int main(){
-    cin >> s;
-    cin >> t;
+    string s, t;
+    cin >> s >> t;
 
-    generate_map();
+    int len_s = s.size();
+    int len_t = t.size();
+    vector< vector<int> > is(26);
+    for(int i = 0; i < len_s; i++){
+        is[s[i]-'a'].push_back(i);
+    }
+    for(int i = 0; i < len_s; i++){
+        is[s[i]-'a'].push_back(i+len_s);
+    }
 
-    long long s_len = s.size();
-    long long t_len = t.size();
     long long ans = 0;
-    for(int i = 0; i < t_len; i++){
-        if(M_s.count(t[i]) == 0){
+    int p = 0;
+    for(int i = 0; i < len_t; i++){
+        int c = t[i]-'a';
+        if(is[c].size() == 0){
             cout << -1 << endl;
 
             return 0;
-        }else{
-            if(i != t_len-1){
-                if(i+1 < t_len && M_s.count(t[i+1]) != 0 && M_s[t[i]] < M_s[t[i+1]]){
-                    continue;
-                }
-                ans += s_len;
-            }else{
-                ans += (long long)M_s[t[i]];
-            }
+        }
+
+        p = *lower_bound(is[c].begin(), is[c].end(), p) + 1;
+        if(p >= len_s){
+            p -= len_s;
+            ans += len_s;
         }
     }
+    ans += p;
 
     cout << ans << endl;
 
