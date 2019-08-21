@@ -1,58 +1,49 @@
 
-#include <cstdio>
-#include <cstring>
-#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
-int n, k;
-const int MAX_N = 10e5;
-char s[MAX_N + 1];
-char t[MAX_N + 1];
-int ans = 0;
-
-void order();
-
 int main(){
-    scanf("%d %d", &n, &k);
-    scanf("%s", s);
-    order();
-    printf("%d\n", ans);
+    int N, K;
+    cin >> N >> K;
+    string S;
+    cin >> S;
+
+    vector<int> nums;
+    if(S[0] == '0'){
+        nums.push_back(0);
+    }
+    for(int i = 0; i < S.size();){
+        int j = i;
+        while(j < S.size() && S[j] == S[i]){
+            j++;
+        }
+        nums.push_back(j - i);
+        i = j;
+    }
+    if(S.back() == '0'){
+        nums.push_back(0);
+    }
+
+
+    vector<int> sums((int)nums.size()+1, 0);
+    for(int i = 0; i < nums.size(); i++){
+        sums[i+1] = sums[i] + nums[i];
+    }
+
+
+    int ans = 0;
+    for(int l = 0; l < sums.size(); l += 2) {
+        int r = l+K*2+1;
+        if(r >= sums.size()){
+            r = (int)sums.size()-1;
+        }
+        ans = max(ans, sums[r]-sums[l]);
+    }
+    cout << ans << endl;
+
 
     return 0;
-}
-
-
-void order(){
-    int count_order = 0;
-    int count_len = 0;
-    for(int i = 0; i < n; i++){
-        strcpy(t, s);
-        count_order = 0;
-        for(int j = i; j < n; j++){
-            if(t[j] == '1'){
-                continue;
-            }else{
-                t[j] = '1';
-                for(int k = j + 1; s[k] == '0'; k++){
-                    t[k] = '1';
-                }
-                count_order++;
-                if(count_order == k){
-                    break;
-                }
-            }
-        }
-        printf("%s\n", t);
-
-        for(int i = 0; i < n; i++){
-            if(t[i] == '1'){
-                count_len++;
-            }else{
-                ans = max(ans, count_len);
-                count_len = 0;
-                continue;
-            }
-        }
-    }
 }
