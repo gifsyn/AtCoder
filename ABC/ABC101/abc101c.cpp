@@ -1,16 +1,36 @@
 
-#include <cstdio>
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int N, K;
+vector<int> A;
 
 int main(){
-    int N,K;
-    scanf("%d",&N);
-    int A[N];
-    for(int i = 0; i < N; i++){
-        scanf(" %d",&A[i]);
+    cin >> N >> K;
+    A.resize(N);
+    for(int i = 0; i < N; ++i){
+        cin >> A[i];
     }
-    for(;;){
 
+    int res = 0;
+    int right = 0;
+    while(true){
+        if(res == 0){
+            right += K;
+        }else{
+            right += K-1;
+        }
+        res++;
+
+        if(right >= N){
+            break;
+        }
     }
-    
+
+    cout << res << endl;
+
+
     return 0;
 }

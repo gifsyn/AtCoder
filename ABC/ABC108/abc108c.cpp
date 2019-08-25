@@ -1,31 +1,30 @@
 
-#include <cstdio>
+#include <iostream>
+#include <vector>
+
+using namespace std;
 
 int main(){
-    int n,k;
-    scanf("%d %d",&n,&k);
-    int count = 0;
-    for(int p = 1; p <= n; p++){
-        for(int q = p; q <= n; q++){
-            if((p + q) % k == 0 && p % k == q % k){
-                for(int r = q; r <= n; r++){
-                    if((q + r) % k == 0 && (r + p) % k == 0){
-                        if(p == q && q == r){
-                            count++;
-                        }else if(p == q && q != r){
-                            count += 3;
-                        }else if(p != q && q == r){
-                            count += 3;
-                        }else if(p != q && q != r && r != p){
-                            count += 6;
-                        }
-                    }
-                }
-                q += k - 1;
-            }
+    int n, k;
+    cin >> n >> k;
+    vector<long long> num(k, 0);
+    for (int i = 1; i <= n; ++i){
+        num[i%k]++; // num[x] = kで割ってxあまる数が1以上N以下に何個あるか
+    }
+
+    long long res = 0;
+    for (int a = 0; a < k; a++){
+        int b = (k-a) % k;
+        int c = (k-a) % k;
+        if((b+c) % k != 0){
+            continue;
+        }else{
+            res += num[a] * num[b] * num[c];
         }
     }
-    printf("%d\n",count);
+
+    cout << res << endl;
+
 
     return 0;
 }
