@@ -13,13 +13,11 @@ int main(){
 
     // 足場 0 ~ N-1
     long long dp[N]; // dp[i] := 足場i番目までの最小コスト
-    for(int i = 0; i < N; i++){
-        dp[i] = __LONG_LONG_MAX__; // 十分大きな値で初期化
-    }
     dp[0] = 0; // 足場 0
     dp[1] = abs(h[1]-h[0]); // 足場 1
     for(int i = 2; i < N; i++){
-        for(int j = 1; (j <= K && i-j >= 0); j++){
+        dp[i] = dp[i-1]+abs(h[i]-h[i-1]);
+        for(int j = 2; (j <= K && i-j >= 0); j++){
             dp[i] = min(dp[i], dp[i-j]+abs(h[i]-h[i-j]));
         }
     }
