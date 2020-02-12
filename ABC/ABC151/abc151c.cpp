@@ -2,31 +2,36 @@
 using namespace std;
 using ll = long long;
 
-bool check[(int)1e9];
-
-int main() {
-    int N;
-    cin >> N;
-    vector<int> A(N);
-    for(int i=0; i<N; i++){
-        cin >> A[i];
+int main(){
+    int N, M;
+    cin >> N >> M;
+    vector<int> p(M);
+    vector<string> S(M);
+    for(int i=0; i<M; i++){
+        cin >> p[i] >> S[i];
     }
 
-    bool flag = true;
-    for(int i=0; i<N; i++){
-        if(check[A[i]] == false){
-            check[A[i]] = true;
-        }else{
-            flag = false;
-            break;
+    int cnt_AC = 0;
+    int cnt_PN = 0;
+    vector<int> p_AC(N, 0);
+    vector<int> p_WA(N, 0);
+
+
+    for(int i=0; i<M; i++){
+        if(S[i] == "AC"){
+            if(p_AC[p[i]-1] == 0){
+                cnt_AC++;
+                cnt_PN += p_WA[p[i]-1];
+            }
+            p_AC[p[i]-1]++;
+        }
+
+        if(S[i] == "WA"){
+            p_WA[p[i]-1]++;
         }
     }
 
-    if(flag){
-        cout << "YES" << endl;
-    }else{
-        cout << "NO" << endl;
-    }
+    cout << cnt_AC << " " << cnt_PN << endl;
 
     return 0;
 }
